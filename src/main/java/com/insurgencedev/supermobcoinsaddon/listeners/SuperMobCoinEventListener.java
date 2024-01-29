@@ -12,7 +12,7 @@ public final class SuperMobCoinEventListener implements Listener {
     public void onReceive(MobCoinsReceiveEvent event) {
         final String TYPE = "Mobcoins";
         final String NAMESPACE = "SUPER_MOBCOINS";
-        final double[] totalMulti = {1};
+        final double[] totalMulti = {0};
 
         BoosterFindResult pResult = IBoosterAPI.INSTANCE.getCache(event.getProfile().getPlayer()).getBoosterDataManager().findActiveBooster(TYPE, NAMESPACE);
         if (pResult instanceof BoosterFindResult.Success boosterResult) {
@@ -24,7 +24,9 @@ public final class SuperMobCoinEventListener implements Listener {
             return null;
         }, () -> null);
 
-        event.setAmount(calculateAmount(event.getAmount(), totalMulti[0]));
+        if (totalMulti[0] > 0) {
+            event.setAmount(calculateAmount(event.getAmount(), totalMulti[0]));
+        }
     }
 
     private long calculateAmount(double amount, double multi) {
